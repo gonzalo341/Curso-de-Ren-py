@@ -1,12 +1,18 @@
-﻿# Personajes:
-
+﻿# Definir los personajes
 define a = Character("Alex", color="#00ff00")
 define l = Character("Luna", color="#00bfff")
 define r = Character("Rai", color="#ff6347")
 define v = Character("Viktor", color="#ffffff")
 
-#Inicio del juego.
+# Variables
+$ Herramienta = false
 
+#Definir las imagenes
+image bg labyrinth = "bg_portal.jpg"
+image bg rope = "rope.png"
+image bg sunset = "bg_forest.jpg"
+
+# Define the start of the game
 label start:
     # Introducción
     scene bg labyrinth
@@ -41,17 +47,44 @@ label left_path:
 
     v "¿No ven que todo está bien? Confíen en mí."
 
+    "Empiezan a caminar por el camino"
+    "¡Encuentras varios objetos tirados!"
+
+    r "Hay una mochila, Parece que alguien paso por aqui"
+    l "Pero esta rota, veamos que podemos tomar"
+
+    menu:
+        "Cuerda":
+            $ Herramienta = True
+        "Botella de agua":
+            $ Herramienta = False
+        "Libros":
+            $ Herramienta = False
+
     # Descripción del camino izquierdo, que lleva a un final malo
-    scene bg trap
+    scene bg labyrinth
+    show rope
+    
     a "¡Ahhh! ¡Es una trampa!"
 
     v "Sabía que caerían en ella... Este es su destino."
 
-    menu:
-        "Seguir luchando":
-            jump final_bad
-        "Rendirse":
-            jump final_bad
+    if (Herramienta == True):
+        menu:
+            "Usar la cuerda":
+                a "¡Logramos escapar!"
+                r "Volvamos y vayamos por el otro camino"
+                jump right_path
+            "Seguir luchando":
+                jump final_bad
+            "Rendirse":
+                jump final_bad
+    else:
+        menu: 
+            "Seguir luchando":
+                jump final_bad
+            "Rendirse":
+                jump final_bad
 
 label right_path:
     a "Este camino parece más largo, pero siento que es el correcto."
